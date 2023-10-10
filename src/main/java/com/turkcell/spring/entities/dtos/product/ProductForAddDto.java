@@ -5,33 +5,32 @@ import lombok.Data;
 
 @Data
 public class ProductForAddDto {
-    @NotBlank(message = "Ürün ismi girmek zorunludur")
-    @Size(min = 3, max = 50)
+    @NotBlank(message = "{productNameCantBeEmpty}")
+    @Size(min = 3, max = 50,message = "{productNameShouldBeMinimumAndMaximum}")
     private String productName;
 
-    //@NotBlank(message = "Ürün fiyatı boş geçilemez")
-    @NotNull(message = "Ürün fiyatı boş geçilemez")
-    @Min(value = 0,message = "Ürün fiyatı 0'dan küçük olamaz")
+    @NotNull(message = "{unitPriceCantBeEmpty}")
+    @Min(value = 0,message = "{unitPriceShouldBeMinimum}")
     private float unitPrice;
 
     private String quantityPerUnit;
 
-    @NotNull(message = "Stok miktarı boş geçilemez")
-    @Positive(message = "Stok miktarı 0'dan küçük olamaz")
+    @NotNull(message = "{unitsInStockCantBeEmpty}")
+    @Positive(message = "{unitsInStockShouldBeGreaterThan0}")
     private short unitsInStock;
 
     private short unitsOnOrder;
 
-    @Min(0)
-    @Max(1)
+    @Min(value = 0,message = "{discontinuedShouldBeMinimum}")
+    @Max(value = 1,message = "{discontinuedShouldBeMaximum}")
     private int discontinued;
     private short reorderLevel;
 
-    @NotNull(message = "Supplier id boş geçilemez")
-    @Min(value = 1, message = "Supplier id 0'dan büyük olmalıdır")
+    @NotNull(message = "{supplierIdCantBeEmpty}")
+    @Min(value = 1, message = "{supplerIdShouldBeGreaterThan0}")
     private short supplierId;
 
-    @NotNull(message = "Category id boş geçilemez")
-    @Min(value = 1, message = "Category id 0'dan büyük olmalıdır")
+    @NotNull(message = "{categoryIdCantBeEmpty}")
+    @Min(value = 1, message = "{categoryIdCantBeLessThanMinValue}")
     private int categoryId;
 }

@@ -11,24 +11,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductForUpdateDto {
-    @NotBlank(message = "Ürün ismi girmek zorunludur")
-    @Size(min = 1, max = 50)
+    @NotBlank(message = "{productNameCantBeEmpty}")
+    @Size(min = 1, max = 50, message = "{productNameShouldBeMinimumAndMaximum}")
     private String productName;
 
-    @Min(0)
+    @Min(value = 0,message = "{unitPriceShouldBeMinimum}")
     private float unitPrice;
 
     private String quantityPerUnit;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "{unitsInStockCantBeEmpty}")
+    @Positive(message = "{unitsInStockShouldBeGreaterThan0}")
     private short unitsInStock;
 
     private short unitsOnOrder;
     private short reorderLevel;
 
-    @Min(1)
+    @Min(value = 1, message = "{supplerIdShouldBeGreaterThan0}")
     private short supplierId;
-    @Min(1)
+    @Min(value = 1, message = "{categoryIdCantBeLessThanMinValue}")
     private int categoryId;
 }

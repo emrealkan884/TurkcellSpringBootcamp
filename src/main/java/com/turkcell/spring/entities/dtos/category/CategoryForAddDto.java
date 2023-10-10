@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class CategoryForAddDto {
-    @NotBlank(message = "Kategori ismi boş olamaz")
-    @Size(min=3,max=20)
+    @NotBlank(message = "{categoryNameCantBeEmpty}")
+    @Size(min=3,max=20,  message="{categoryNameShouldBeMinimum}")
     private String categoryName;
 
-    @NotBlank(message = "Açıklama boş olamaz")
-    @Size(min=3,max=50)
+    @NotBlank(message = "{descriptionCantBeEmpty}")
+    @Size(min=3,max=50, message = "{descriptonShouldBeMinimumAndMaximum}")
     private String description;
 }

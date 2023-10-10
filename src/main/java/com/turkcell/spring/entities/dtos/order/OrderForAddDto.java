@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 @Builder
 public class OrderForAddDto {
-    @PastOrPresent(message = "Sevk tarihi geçmiş veya günümüz tarihi olmalıdır")
-    private LocalDate shippedDate;
 
-    @Positive(message = "Kargo ücreti 0'dan büyük olmalıdır")
+    @PastOrPresent(message = "{shippedDateMustBePastOrPresentDate}")
+    private LocalDate shippedDate;
+    @Positive(message = "{freightShouldBeGreaterThan0}")
     private float freight;
     private String shipAddress;
     private String shipCountry;
@@ -26,14 +26,15 @@ public class OrderForAddDto {
     private String shipRegion;
     private String shipPostalCode;
 
-    @NotNull(message = "Customer Id alanı boş geçilemez")//Normalde giriş yapmış kullanıcı otomatik id'si alınır..
+    @NotNull(message = "{customerIdCantBeEmpty}")//Normalde giriş yapmış kullanıcı otomatik id'si alınır..
     private String customerId;
-    @NotNull(message = "Employee Id alanı boş geçilemez")
-    private short employeeId;
-    @NotNull(message = "Ship Via alanı boş geçilemez")
-    private short shipVia;
 
-    @Future
+    @NotNull(message = "{employeeIdCantBeEmpty}")
+    private short employeeId;
+    @NotNull(message = "{shipperIdCantBeEmpty}")
+    private short shipperId;
+
+    @Future(message = "{requiredDateShouldBeInTheFuture}")
     private LocalDate requiredDate;
 
     private List<OrderDetailForAddDto> items;

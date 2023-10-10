@@ -9,16 +9,15 @@ import lombok.Data;
 @Data
 public class CategoryForUpdateDto {
 
-    @NotNull()
-    @Min(1)
+    @NotNull(message = "{categoryDoesNotExistWithGivenId}")
+    @Min(value = 1,message = "{categoryIdShouldBeMinimum}")
     private int id;
 
-    @NotNull
-    @NotBlank(message = "Kategori ismi boş olamaz")
+    @NotBlank(message = "{categoryNameCantBeEmpty}")
     @Size(min=3,max=20)
     private String categoryName;
 
-    @NotBlank(message = "Açıklama boş olamaz")
-    @Size(min=3,max=50)
+    @NotBlank(message = "{descriptionCantBeEmpty}")
+    @Size(min=3,max=50, message = "{descriptonShouldBeMinimumAndMaximum}")
     private String description;
 }

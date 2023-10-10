@@ -13,13 +13,12 @@ public class OrderForUpdateDto {
     private LocalDate shippedDate;
     private float freight;
 
-    @NotNull
-    @NotBlank(message = "Gemi ismi boş bırakılamaz")
+    @NotBlank(message = "{shipNameCantBeEmpty}")
     private String shipName;
 
     private String shipAddress;
     private String shipCity;
 
-    @NotBlank(message = "Kargo ülkesi boş bırakılamaz")
+    @NotBlank(message = "{shipCountryCantBeEmpty}")
     private String shipCountry;
 }
