@@ -8,21 +8,19 @@ import com.turkcell.spring.entities.concretes.Product;
 import com.turkcell.spring.entities.dtos.orderDetail.OrderDetailForAddDto;
 import com.turkcell.spring.entities.dtos.product.ProductForGetByIdDto;
 import com.turkcell.spring.repositories.OrderDetailRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderDetailManager implements OrderDetailService {
 
     private final OrderDetailRepository orderDetailRepository;
     private final ProductService productService;
-
-    public OrderDetailManager(OrderDetailRepository orderDetailRepository,ProductService productService) {
-        this.orderDetailRepository = orderDetailRepository;
-        this.productService = productService;
-    }
     @Override
     public void addItemsToOrder(Order order, List<OrderDetailForAddDto> items) {
        for (OrderDetailForAddDto item : items){

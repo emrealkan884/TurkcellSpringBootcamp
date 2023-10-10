@@ -6,6 +6,7 @@ import com.turkcell.spring.entities.dtos.customer.CustomerForGetByIdDto;
 import com.turkcell.spring.entities.dtos.customer.CustomerForListingDto;
 import com.turkcell.spring.entities.dtos.customer.CustomerForUpdateDto;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("customers")
+@RequiredArgsConstructor
 public class CustomersController {
+
     private final CustomerService customerService;
-    public CustomersController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     @PostMapping("add")
     public ResponseEntity add(@RequestBody @Valid CustomerForAddDto customerForAddDto){

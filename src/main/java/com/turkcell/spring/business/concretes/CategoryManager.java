@@ -1,28 +1,31 @@
 package com.turkcell.spring.business.concretes;
 
 import com.turkcell.spring.business.abstracts.CategoryService;
-import com.turkcell.spring.business.exceptions.BusinessException;
+import com.turkcell.spring.core.exceptions.types.BusinessException;
 import com.turkcell.spring.entities.concretes.Category;
 import com.turkcell.spring.entities.dtos.category.CategoryForAddDto;
 import com.turkcell.spring.entities.dtos.category.CategoryForGetByIdDto;
 import com.turkcell.spring.entities.dtos.category.CategoryForListingDto;
 import com.turkcell.spring.entities.dtos.category.CategoryForUpdateDto;
 import com.turkcell.spring.repositories.CategoryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryManager implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    public CategoryManager(CategoryRepository categoryRepository){
-        this.categoryRepository = categoryRepository;
-    }
+    private final MessageSource messageSource;
 
     @Override
     public void add(CategoryForAddDto categoryForAddDto) {
+        categoryWithSameNameShouldNotExist(categoryForAddDto.getCategoryName());
         Category category = Category.builder()
                 .categoryName(categoryForAddDto.getCategoryName())
                 .description(categoryForAddDto.getDescription())
@@ -72,19 +75,23 @@ public class CategoryManager implements CategoryService {
 
     public  void categoryWithCategoryNameShouldBeginUpperCase(String categoryName){
         if(!Character.isUpperCase(categoryName.charAt(0))){
-            throw new BusinessException("Kategori ismi büyük hafle başlamalıdır.");
+            throw new BusinessException(
+                    messageSource.getMessage("categoryWithCategoryNameShouldBeginUpperCase",null, LocaleContextHolder.getLocale())
+            );
         }
     }
 
     public void categoryWithDescriptionLengthGreaterThanCategoryNameLength(String description, String categoryName){
         if(categoryName.length() > description.length()){
-            throw new BusinessException("Kategori ismi açıklamadan uzun olamaz.");
+            throw new BusinessException(
+                    messageSource.getMessage("categoryWithDescriptionLengthGreaterThanCategoryNameLength",null,LocaleContextHolder.getLocale()));
         }
     }
     public void categoryShouldNotBeMoreThan10(){
         List<CategoryForListingDto> category = categoryRepository.getForListing();
         if (category.size() >=10){
-            throw new BusinessException("10'dan fazla kategori bulunamaz.");}
+            throw new BusinessException(
+                    messageSource.getMessage("categoryShouldNotBeMoreThan10",null,LocaleContextHolder.getLocale()));}
     }
 
     public void categoryWithSameNameShouldNotExist(String categoryName){
@@ -92,14 +99,16 @@ public class CategoryManager implements CategoryService {
         Category categoryWithSameName = categoryRepository.findByCategoryName(categoryName);
         if (categoryWithSameName != null){
             //Business kuralı hatası
-            throw new BusinessException("Aynı kategori isminden iki kategori bulunamaz");
+            throw new BusinessException(
+                    messageSource.getMessage("categoryWithSameNameShouldNotExist",null,LocaleContextHolder.getLocale()));
         }
     }
 
     private Category returnCategoryByIdIfExist(int id){
         Category category = categoryRepository.findById(id).orElse(null);
         if(category==null)
-            throw new BusinessException("Böyle bir kategori bulunamadı.");
+            throw new BusinessException(
+                    messageSource.getMessage("categoryDoesNotExistWithGivenId", new Object[] {id}, LocaleContextHolder.getLocale()));
         return category;
     }
 }

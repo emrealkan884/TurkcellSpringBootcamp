@@ -4,19 +4,17 @@ import com.turkcell.spring.business.abstracts.SupplierService;
 import com.turkcell.spring.entities.dtos.supplier.SupplierForGetByIdDto;
 import com.turkcell.spring.entities.dtos.supplier.SupplierForListingDto;
 import com.turkcell.spring.repositories.SupplierRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SupplierManager implements SupplierService {
 
     private final SupplierRepository supplierRepository;
-
-    public SupplierManager(SupplierRepository supplierRepository) {
-        this.supplierRepository = supplierRepository;
-    }
 
     @Override
     public List<SupplierForListingDto> getAll() {

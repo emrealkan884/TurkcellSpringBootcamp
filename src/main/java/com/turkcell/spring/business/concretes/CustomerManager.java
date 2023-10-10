@@ -1,25 +1,26 @@
 package com.turkcell.spring.business.concretes;
 
 import com.turkcell.spring.business.abstracts.CustomerService;
-import com.turkcell.spring.business.exceptions.BusinessException;
-import com.turkcell.spring.entities.concretes.Category;
+import com.turkcell.spring.core.exceptions.types.BusinessException;
 import com.turkcell.spring.entities.concretes.Customer;
 import com.turkcell.spring.entities.dtos.customer.CustomerForAddDto;
 import com.turkcell.spring.entities.dtos.customer.CustomerForGetByIdDto;
 import com.turkcell.spring.entities.dtos.customer.CustomerForListingDto;
 import com.turkcell.spring.entities.dtos.customer.CustomerForUpdateDto;
 import com.turkcell.spring.repositories.CustomerRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerManager implements CustomerService {
 
-    private CustomerRepository customerRepository;
-    public CustomerManager(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
+    private final CustomerRepository customerRepository;
+    private final MessageSource messageSource;
 
     @Override
     public void add(CustomerForAddDto customerForAddDto) {
@@ -65,7 +66,9 @@ public class CustomerManager implements CustomerService {
     private Customer returnCustomerByIdIfExists(String id){
         Customer customer = customerRepository.findById(id).orElse(null);
         if(customer==null)
-            throw new BusinessException("Böyle bir müşteri bulunamadı.");
+            throw new BusinessException(
+                    messageSource.getMessage("customerDoesNotExist",null, LocaleContextHolder.getLocale())
+            );
         return customer;
     }
 }

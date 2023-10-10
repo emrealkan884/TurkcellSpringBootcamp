@@ -7,6 +7,7 @@ import com.turkcell.spring.entities.dtos.category.CategoryForGetByIdDto;
 import com.turkcell.spring.entities.dtos.category.CategoryForListingDto;
 import com.turkcell.spring.entities.dtos.category.CategoryForUpdateDto;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("categories")
+@RequiredArgsConstructor
 public class CategoriesController {
 
     // DI
     // Spring IoC => Bağımlılıkların çözümlenmesi..
     private final CategoryService categoryService;
-
-    public CategoriesController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping()
     public List<CategoryForListingDto> getCategories()

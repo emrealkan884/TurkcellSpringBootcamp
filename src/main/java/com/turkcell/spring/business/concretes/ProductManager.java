@@ -1,24 +1,25 @@
 package com.turkcell.spring.business.concretes;
 
 import com.turkcell.spring.business.abstracts.ProductService;
-import com.turkcell.spring.business.exceptions.BusinessException;
+import com.turkcell.spring.core.exceptions.types.BusinessException;
 import com.turkcell.spring.entities.concretes.Category;
 import com.turkcell.spring.entities.concretes.Product;
 import com.turkcell.spring.entities.concretes.Supplier;
 import com.turkcell.spring.entities.dtos.product.*;
 import com.turkcell.spring.repositories.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductManager implements ProductService {
-    private final ProductRepository productRepository;
 
-    public ProductManager(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private final ProductRepository productRepository;
+    private final MessageSource messageSource;
 
     @Override
     public void add(ProductForAddDto productForAddDto) {
@@ -130,7 +131,9 @@ public class ProductManager implements ProductService {
     private void productWithSameNameShouldNotExist(String productName) {
         Product productWithSameName = productRepository.findByProductName(productName);
         if (productWithSameName != null) {
-            throw new BusinessException("Aynı ürün isminden 2 ürün bulunamaz");
+            throw new BusinessException(
+                    messageSource.getMessage("productWithSameNameShouldNotExist",null, LocaleContextHolder.getLocale())
+            );
         }
     }
 

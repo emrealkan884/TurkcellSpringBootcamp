@@ -1,6 +1,6 @@
-package com.turkcell.spring;
+package com.turkcell.spring.core.exceptions;
 
-import com.turkcell.spring.business.exceptions.BusinessException;
+import com.turkcell.spring.core.exceptions.types.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;

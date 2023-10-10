@@ -7,6 +7,7 @@ import com.turkcell.spring.entities.dtos.product.ProductForGetByIdDto;
 import com.turkcell.spring.entities.dtos.product.ProductForListingDto;
 import com.turkcell.spring.entities.dtos.product.ProductForUpdateDto;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("products")
+@RequiredArgsConstructor
 public class ProductsController {
+
     private final ProductService productService;
-    @Autowired
-    public ProductsController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @PostMapping("add")
     public ResponseEntity add(@RequestBody @Valid ProductForAddDto productForAddDto){
