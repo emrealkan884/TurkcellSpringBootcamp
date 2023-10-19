@@ -1,10 +1,7 @@
 package com.turkcell.spring.entities.concretes;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,44 +9,42 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Entity
-@Table(name = "users")
+@Table(name="users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//UserDetails spring security'den geliyor
+// Spring Security'deki user ile uyumlu çalışabilmesi için `implements UserDetails`
 public class User implements UserDetails {
     @Id
-    @Column(name = "id")
-    @GeneratedValue()
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String  name;
+    private String name;
     @Column(name = "last_name")
     private String lastName;
     private String username;
     private String password;
+    private String role;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            name="users_roles",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // roller
-        Set<Role> roles = getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
-
-        return authorities;
+        // todo: refactor with multiple roles
+        List<SimpleGrantedAuthority> listOfRoles =
+                roles.stream().map((role) -> new SimpleGrantedAuthority(role.getName())).toList();
+        return listOfRoles;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

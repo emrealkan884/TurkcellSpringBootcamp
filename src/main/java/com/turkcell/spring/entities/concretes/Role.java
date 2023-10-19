@@ -2,25 +2,27 @@ package com.turkcell.spring.entities.concretes;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.List;
+
 @Entity
-@Table(name = "roles")
+@Table(name="roles")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role implements GrantedAuthority {
+@Builder
+@ToString(exclude = {"users"})
+public class Role {
     @Id
-    @Column(name = "role_id")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String roleName;
 
-    @Override
-    public String getAuthority() {
-        return roleName;
-    }
+    private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
+
 }

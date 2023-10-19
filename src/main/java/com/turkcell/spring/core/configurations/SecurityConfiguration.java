@@ -39,14 +39,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // listedeki url'lerin auth zorunluluğu olmaması
-        //.anyRequest().authenticated(): Bu satır, diğer tüm URL'lerin kimlik doğrulaması gerektirdiğini belirtir.
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URLS).permitAll()
-                        .requestMatchers("/categories/**")
-                        .hasAnyAuthority("Admin","Category.Admin","Global.Admin","ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/auth/updateUserRoles")).hasAuthority("ADMIN") // Sadece Admin rolüne sahip kullanıcılar /updateUserRoles URL'ine erişebilir.
+                        .requestMatchers(HttpMethod.POST,"/categories/**").hasAnyAuthority("Admin","Category.Admin","Global.Admin")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
